@@ -48,9 +48,38 @@ enablerpcsvc(){
     echo "adding entry to enable rpcsvc package"
     echo "NEED_SVCGSSD = yes" >> "/etc/inetd.conf"
 }
+enabledccp(){
+    # removing the entry to disbale dccp package
+    echo "removing the entry to disbale dccp package"
+    sed -i 's/install dccp \/bin\/false/ /g' /etc/modprobe.d/blacklistdccp.conf
+    sudo modprobe dccp 
+}
+enablesctp(){
+    # removing the entry to disbale sctp package
+    echo "removing the entry to disbale sctp package"
+    sed -i 's/install sctp \/bin\/false/ /g' /etc/modprobe.d/blacklistsctp.conf
+    sudo modprobe sctp 
+}
+enablerds(){
+    # removing the entry to disbale rds package
+    echo "removing the entry to disbale rds package"
+    sed -i 's/install rds \/bin\/false/ /g' /etc/modprobe.d/blacklistrds.conf
+    sudo modprobe rds 
+}
+enabletipc(){
+    # removing the entry to disbale tipc package
+    echo "removing the entry to disbale tipc package"
+    sed -i 's/install tipc \/bin\/false/ /g' /etc/modprobe.d/blacklisttipc.conf
+    sudo modprobe tipc 
+}
 
 enablecramfs
 enablefreevxfs
 enablehfs
 enablehfsplus
 enablejfs2
+enablerpcsvc
+enabledccp
+enablesctp
+enablerds
+enabletipc

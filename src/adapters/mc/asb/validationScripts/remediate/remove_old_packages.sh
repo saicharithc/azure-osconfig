@@ -142,26 +142,6 @@ removesnmpd(){
     sudo $package_manager remove -y snmpd
 }
 
-
-removeinetd
-removexinetd
-removetelnetd
-removercprsh
-removetftpd
-removereadaheadfedora
-removebluetooth
-removeisdnutils
-removekdumputils
-removeavahidaemon
-removecups
-removesendmail
-removepostfix
-removeldap
-removerpcgssd
-removerpcidmapd
-removenfs
-removedovecotcore
-
 removeprelink() {
     # remove prelink package
     echo "removing prelink package"
@@ -213,6 +193,24 @@ removesamba() {
     sudo $package_manager remove -y samba
 }
 
+removeinetd
+removexinetd
+removetelnetd
+removercprsh
+removetftpd
+removereadaheadfedora
+removebluetooth
+removeisdnutils
+removekdumputils
+removeavahidaemon
+removecups
+removesendmail
+removepostfix
+removeldap
+removerpcgssd
+removerpcidmapd
+removenfs
+removedovecotcore
 
 removeprelink
 removebind9

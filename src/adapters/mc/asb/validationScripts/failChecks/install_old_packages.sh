@@ -164,25 +164,7 @@ installsnmpd(){
 
 
 
-installinetd
-installxinetd
-installtelnetd
-installrcprsh
-installtftpd
-installfedorareadahed
-installbluetooth
-installisdnutils
-installkdumputils
-installavahidaemon
-installcups
-installiscdhcpserver
-installsendmail
-installpostfix
-installldap
-installrpcgssd
-installrpcidmapd
-installdovecotcore
-installsnmpd
+
 
 installprelink() {
     # Install prelink package
@@ -238,6 +220,27 @@ installrshclient() {
         sudo zypper install -y rsh-client
     fi
 }
+
+
+installinetd
+installxinetd
+installtelnetd
+installrcprsh
+installtftpd
+installfedorareadahed
+installbluetooth
+installisdnutils
+installkdumputils
+installavahidaemon
+installcups
+installiscdhcpserver
+installsendmail
+installpostfix
+installldap
+installrpcgssd
+installrpcidmapd
+installdovecotcore
+installsnmpd
 
 installprelink
 installtalkclient

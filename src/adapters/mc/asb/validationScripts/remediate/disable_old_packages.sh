@@ -48,7 +48,18 @@ disablerpcsvc(){
     echo "removing the entry to disbale rpcsvc package"
     sed -i 's/NEED_SVCGSSD = yes/ /g' /etc/inetd.conf
 }
-
+disabledccp(){
+    # disabling dccp package
+    echo "disabling dccp package"
+    echo "install dccp /bin/false" > /etc/modprobe.d/blacklistdccp.conf
+    sudo modprobe -r dccp 
+}
+disbalesctp(){
+    # disabling sctp package
+    echo "disabling sctp package"
+    echo "install sctp /bin/false" > /etc/modprobe.d/blacklistsctp.conf
+    sudo modprobe -r sctp 
+}
 
 
 
@@ -57,3 +68,6 @@ disablefreevxfs
 disablehfs
 disablehfsplus
 disablejffs2
+disablerpcsvc
+disabledccp
+disbalesctp
