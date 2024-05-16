@@ -60,6 +60,12 @@ disbalesctp(){
     echo "install sctp /bin/false" > /etc/modprobe.d/blacklistsctp.conf
     sudo modprobe -r sctp 
 }
+disabletipc(){
+    # disabling tipc package
+    echo "disabling tipc package"
+    echo "install tipc /bin/false" > /etc/modprobe.d/blacklisttipc.conf
+    sudo modprobe -r tipc 
+}
 
 
 
@@ -71,3 +77,4 @@ disablejffs2
 disablerpcsvc
 disabledccp
 disbalesctp
+disabletipc
