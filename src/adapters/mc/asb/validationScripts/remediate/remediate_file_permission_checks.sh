@@ -81,6 +81,7 @@ sudo chown root:root /boot/grub/grub.cfg
 sudo chmod 0600 /boot/grub/grub.cfg
 
 echo "setting permissions on /etc/anacrontab"
+sudo $package_manager install anacron
 sudo chown root:root /etc/anacrontab
 sudo chmod 0600 /etc/anacrontab
 

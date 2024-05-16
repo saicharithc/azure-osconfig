@@ -77,6 +77,7 @@ echo "setting permissions on bootloader config"
 sudo chmod 777 /boot/grub/grub.cfg
 
 echo "setting permissions on /etc/anacrontab"
+sudo $package_manager install anacron
 sudo chmod 777 /etc/anacrontab
 
 echo "setting permissions on /etc/cron.d"
