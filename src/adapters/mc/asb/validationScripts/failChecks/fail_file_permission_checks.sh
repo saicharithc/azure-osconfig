@@ -24,6 +24,10 @@ sudo sed -i 's/hard core 0/ /g' /etc/security/limits.conf
 sudo fs.suid_dumpable=1
 
 echo "relaxing permissions on /etc/motd"
+#check if motd file exists and create it if it doesn't
+if [ ! -f /etc/motd ]; then
+    sudo touch /etc/motd
+fi
 sudo chmod 777 /etc/motd
 
 echo "restricting permissions on /etc/issue"
@@ -70,7 +74,7 @@ echo "setting permissions on user home directories"
 sudo chmod 777 /home/*
 
 echo "setting permissions on bootloader config"
-sudo chmod 777 $BOOTLOADER_CONFIG_FILE_PATH
+sudo chmod 777 /boot/grub/grub.cfg
 
 echo "setting permissions on /etc/anacrontab"
 sudo chmod 777 /etc/anacrontab
