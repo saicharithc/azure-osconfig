@@ -74,7 +74,7 @@ sudo sysctl -w net.ipv4.tcp_syncookies=0
 
 
 echo "The system shouldn't act as a network sniffer"
-disablePromisc
+enablePromisc
 
 echo "Ensure ipv6 is disabled"
 disbaleipv6
