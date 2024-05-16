@@ -77,8 +77,8 @@ echo "setting permissions on user home directories"
 sudo chmod 750 /home/*
 
 echo "setting permissions on bootloader config"
-sudo chown root:root $BOOTLOADER_CONFIG_FILE_PATH
-sudo chmod 0600 $BOOTLOADER_CONFIG_FILE_PATH
+sudo chown root:root /boot/grub/grub.cfg
+sudo chmod 0600 /boot/grub/grub.cfg
 
 echo "setting permissions on /etc/anacrontab"
 sudo chown root:root /etc/anacrontab
