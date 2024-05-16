@@ -50,15 +50,15 @@ char* LoadStringFromFile(const char* fileName, bool stopAtEol, void* log)
     return string;
 }
 
-bool SavePayloadToFile(const char* fileName, const char* payload, const int payloadSizeBytes, void* log)
+static bool SaveToFile(const char* fileName, const char* mode, const char* payload, const int payloadSizeBytes, void* log)
 {
     FILE* file = NULL;
     int i = 0;
     bool result = true;
 
-    if (fileName && payload && (0 < payloadSizeBytes))
+    if (fileName && mode && payload && (0 < payloadSizeBytes))
     {
-        if (NULL != (file = fopen(fileName, "w")))
+        if (NULL != (file = fopen(fileName, mode)))
         {
             if (true == (result = LockFile(file, log)))
             {
@@ -67,7 +67,7 @@ bool SavePayloadToFile(const char* fileName, const char* payload, const int payl
                     if (payload[i] != fputc(payload[i], file))
                     {
                         result = false;
-                        OsConfigLogError(log, "SavePayloadToFile: failed saving '%c' to '%s' (%d)", payload[i], fileName, errno);
+                        OsConfigLogError(log, "SaveToFile: failed saving '%c' to '%s' (%d)", payload[i], fileName, errno);
                     }
                 }
 
@@ -75,21 +75,158 @@ bool SavePayloadToFile(const char* fileName, const char* payload, const int payl
             }
             else
             {
-                OsConfigLogError(log, "SavePayloadToFile: cannot lock '%s' for exclusive access while writing (%d)", fileName, errno);
+                OsConfigLogError(log, "SaveToFile: cannot lock '%s' for exclusive access while writing (%d)", fileName, errno);
             }
-            
+
+            fflush(file);
             fclose(file);
         }
         else
         {
             result = false;
-            OsConfigLogError(log, "SavePayloadToFile: cannot open for write '%s' (%d)", fileName, errno);
+            OsConfigLogError(log, "SaveToFile: cannot open '%s' in mode '%s' (%d)", fileName, mode, errno);
         }
     }
     else
     {
         result = false;
-        OsConfigLogError(log, "SavePayloadToFile: invalid arguments (%s, '%s', %d)", fileName, payload, payloadSizeBytes);
+        OsConfigLogError(log, "SaveToFile: invalid arguments ('%s', '%s', '%s', %d)", fileName, mode, payload, payloadSizeBytes);
+    }
+
+    return result;
+}
+
+bool SavePayloadToFile(const char* fileName, const char* payload, const int payloadSizeBytes, void* log)
+{
+    return SaveToFile(fileName, "w", payload, payloadSizeBytes, log);
+}
+
+static bool InternalSecureSaveToFile(const char* fileName, const char* mode, const char* payload, const int payloadSizeBytes, void* log)
+{
+    const char* tempFileNameTemplate = "/tmp/~OSConfig.Temp%u";
+    char* tempFileName = NULL;
+    char* fileContents = NULL;
+    int status = 0;
+    bool result = false;
+
+    if ((NULL == fileName) || (NULL == payload) || (0 >= payloadSizeBytes))
+    {
+        OsConfigLogError(log, "InternalSecureSaveToFile: invalid arguments");
+        return false;
+    }
+    else if (NULL == (tempFileName = FormatAllocateString(tempFileNameTemplate, rand())))
+    {
+        OsConfigLogError(log, "InternalSecureSaveToFile: out of memory");
+        return false;
+    }
+
+    if ((0 == strcmp(mode, "a") && FileExists(fileName)))
+    {
+        if (NULL != (fileContents = LoadStringFromFile(fileName, false, log)))
+        {
+            if (true == (result = SaveToFile(tempFileName, "w", fileContents, strlen(fileContents), log)))
+            {
+                result = SaveToFile(tempFileName, "a", payload, payloadSizeBytes, log);
+            }
+            
+            FREE_MEMORY(fileContents);
+        }
+        else
+        {
+            OsConfigLogError(log, "InternalSecureSaveToFile: failed to read from '%s'", fileName);
+            result = false;
+        }
+    }
+    else
+    {
+        result = SaveToFile(tempFileName, "w", payload, payloadSizeBytes, log);
+    }
+        
+    if (result && (false == FileExists(tempFileName)))
+    {
+        OsConfigLogError(log, "InternalSecureSaveToFile: failed to create temporary file");
+        result = false;
+    }
+
+    if (result)
+    {
+        if (0 != (status = rename(tempFileName, fileName)))
+        {
+            OsConfigLogError(log, "InternalSecureSaveToFile: rename('%s' to '%s') failed with %d", tempFileName, fileName, errno);
+            result = false;
+        }
+
+        remove(tempFileName);
+    }
+
+    FREE_MEMORY(tempFileName);
+
+    return result;
+}
+
+bool SecureSaveToFile(const char* fileName, const char* payload, const int payloadSizeBytes, void* log)
+{
+    return InternalSecureSaveToFile(fileName, "w", payload, payloadSizeBytes, log);
+}
+
+bool AppendToFile(const char* fileName, const char* payload, const int payloadSizeBytes, void* log)
+{
+    return InternalSecureSaveToFile(fileName, "a", payload, payloadSizeBytes, log);
+}
+
+bool MakeFileBackupCopy(const char* fileName, const char* backupName, void* log)
+{
+    char* fileContents = NULL;
+    char* newFileName = NULL;
+    bool result = true;
+
+    if (fileName && backupName)
+    {
+        if (FileExists(fileName))
+        {
+            if (NULL != (fileContents = LoadStringFromFile(fileName, false, log)))
+            {
+                result = SecureSaveToFile(backupName, fileContents, strlen(fileContents), log);
+            }
+            else
+            {
+                result = false;
+                OsConfigLogError(log, "MakeFileBackupCopy: failed to make a file copy of '%s'", fileName);
+            }
+        }
+        else
+        {
+            result = false;
+            OsConfigLogError(log, "MakeFileBackupCopy: file '%s' does not exist", fileName);
+        }
+    }
+    else
+    {
+        result = false;
+        OsConfigLogError(log, "MakeFileBackupCopy: invalid arguments ('%s', '%s')", fileName, backupName);
+    }
+
+    FREE_MEMORY(fileContents);
+    FREE_MEMORY(newFileName);
+
+    return result;
+}
+
+bool ConcatenateFiles(const char* firstFileName, const char* secondFileName, void* log)
+{
+    char* contents = NULL;
+    bool result = false;
+    
+    if ((NULL == firstFileName) || (NULL == secondFileName))
+    {
+        OsConfigLogError(log, "ConcatenateFiles: invalid arguments");
+        return false;
+    }
+
+    if (NULL != (contents = LoadStringFromFile(secondFileName, false, log)))
+    {
+        result = AppendToFile(firstFileName, contents, strlen(contents), log);
+        FREE_MEMORY(contents);
     }
 
     return result;
@@ -252,7 +389,8 @@ static int CheckAccess(bool directory, const char* name, int desiredOwnerId, int
                 // Special case for the MPI Client
                 if (NULL != log)
                 {
-                    OsConfigLogInfo(log, "CheckAccess: ownership of '%s' (%d, %d) matches expected", name, statStruct.st_uid, statStruct.st_gid);
+                    OsConfigLogInfo(log, "CheckAccess: ownership of '%s' (%d, %d) matches expected (%d, %d)", 
+                        name, statStruct.st_uid, statStruct.st_gid, desiredOwnerId, desiredGroupId);
                 }
 
                 // S_IXOTH (00001): Execute/search permission, others
@@ -400,120 +538,6 @@ int SetDirectoryAccess(const char* directoryName, unsigned int desiredOwnerId, u
     return SetAccess(true, directoryName, desiredOwnerId, desiredGroupId, desiredAccess, log);
 }
 
-int CheckFileSystemMountingOption(const char* mountFileName, const char* mountDirectory, const char* mountType, const char* desiredOption, char** reason, void* log)
-{
-    FILE* mountFileHandle = NULL;
-    struct mntent* mountStruct = NULL;
-    bool matchFound = false;
-    int lineNumber = 0;
-    int status = 0;
-    
-    if ((NULL == mountFileName) || ((NULL == mountDirectory) && (NULL == mountType)) || (NULL == desiredOption))
-    {
-        OsConfigLogError(log, "CheckFileSystemMountingOption called with invalid argument(s)");
-        return EINVAL;
-    }
-
-    if (!FileExists(mountFileName))
-    {
-        OsConfigLogInfo(log, "CheckFileSystemMountingOption: file '%s' not found, nothing to check", mountFileName);
-        if (OsConfigIsSuccessReason(reason))
-        {
-            OsConfigCaptureSuccessReason(reason, "'%s' is not found, nothing to check", mountFileName);
-        }
-        else
-        {
-            OsConfigCaptureReason(reason, "'%s' is not found", mountFileName);
-        }
-        return 0;
-    }
-
-    if (NULL != (mountFileHandle = setmntent(mountFileName, "r")))
-    {
-        while (NULL != (mountStruct = getmntent(mountFileHandle)))
-        {
-            if (((NULL != mountDirectory) && (NULL != mountStruct->mnt_dir) && (NULL != strstr(mountStruct->mnt_dir, mountDirectory))) ||
-                ((NULL != mountType) && (NULL != mountStruct->mnt_type) && (NULL != strstr(mountStruct->mnt_type, mountType))))
-            {
-                matchFound = true;
-                
-                if (NULL != hasmntopt(mountStruct, desiredOption))
-                {
-                    OsConfigLogInfo(log, "CheckFileSystemMountingOption: option '%s' for mount directory '%s' or mount type '%s' found in file '%s' at line '%d'", 
-                        desiredOption, mountDirectory ? mountDirectory : "-", mountType ? mountType : "-", mountFileName, lineNumber);
-                    
-                    if (NULL != mountDirectory)
-                    {
-                        OsConfigCaptureSuccessReason(reason, "Option '%s' for mount directory '%s' found in file '%s' at line '%d'", desiredOption, mountDirectory, mountFileName, lineNumber);
-                    }
-
-                    if (NULL != mountType)
-                    {
-                        OsConfigCaptureSuccessReason(reason, "Option '%s' for mount type '%s' found in file '%s' at line '%d'", desiredOption, mountType, mountFileName, lineNumber);
-                    }
-                }
-                else
-                {
-                    status = ENOENT;
-                    OsConfigLogError(log, "CheckFileSystemMountingOption: option '%s' for mount directory '%s' or mount type '%s' missing from file '%s' at line %d",
-                        desiredOption, mountDirectory ? mountDirectory : "-", mountType ? mountType : "-", mountFileName, lineNumber);
-                    
-                    if (NULL != mountDirectory)
-                    {
-                        OsConfigCaptureReason(reason, "Option '%s' for mount directory '%s' is missing from file '%s' at line %d", desiredOption, mountDirectory, mountFileName, lineNumber);
-                    }
-
-                    if (NULL != mountType)
-                    {
-                        OsConfigCaptureReason(reason, "Option '%s' for mount type '%s' missing from file '%s' at line %d", desiredOption, mountType, mountFileName, lineNumber);
-                    }
-                }
-
-                if (IsFullLoggingEnabled())
-                {
-                    OsConfigLogInfo(log, "CheckFileSystemMountingOption, line %d in %s: mnt_fsname '%s', mnt_dir '%s', mnt_type '%s', mnt_opts '%s', mnt_freq %d, mnt_passno %d", 
-                        lineNumber, mountFileName, mountStruct->mnt_fsname, mountStruct->mnt_dir, mountStruct->mnt_type, mountStruct->mnt_opts, 
-                        mountStruct->mnt_freq, mountStruct->mnt_passno);
-                }
-            }
-
-            lineNumber += 1;
-        }
-
-        if (false == matchFound)
-        {
-            status = ENOENT;
-            OsConfigLogError(log, "CheckFileSystemMountingOption: mount directory '%s' and/or mount type '%s' not found in file '%s'", mountDirectory ? mountDirectory : "-", mountType ? mountType : "-", mountFileName);
-
-            if (NULL != mountDirectory)
-            {
-                OsConfigCaptureReason(reason, "Found no entries about mount directory '%s' in file '%s' to look for option '%s'", mountDirectory, mountFileName, desiredOption);
-            }
-
-            if (NULL != mountType)
-            {
-                OsConfigCaptureReason(reason, "Found no entries about mount type '%s' in file '%s' to look for option '%s'", mountType, mountFileName, desiredOption);
-            }
-        }
-
-        endmntent(mountFileHandle);
-    }
-    else
-    {
-        status = errno;
-        
-        if (0 == status)
-        {
-            status = ENOENT;
-        }
-        
-        OsConfigLogError(log, "CheckFileSystemMountingOption: could not open file '%s', setmntent() failed (%d)", mountFileName, status);
-        OsConfigCaptureReason(reason, "Cannot access '%s', setmntent() failed (%d)", mountFileName, status);
-    }
-
-    return status;
-}
-
 static unsigned int GetNumberOfCharacterInstancesInFile(const char* fileName, char what)
 {
     unsigned int numberOf = 0;
@@ -574,6 +598,112 @@ int CheckNoLegacyPlusEntriesInFile(const char* fileName, char** reason, void* lo
         OsConfigLogInfo(log, "CheckNoLegacyPlusEntriesInFile(%s): there are no '+' lines in file '%s'", fileName, fileName);
         OsConfigCaptureSuccessReason(reason, "There are no '+' lines in file '%s'", fileName);
     }
+
+    return status;
+}
+
+int ReplaceMarkedLinesInFile(const char* fileName, const char* marker, const char* newline, char commentCharacter, void* log)
+{
+    const char* tempFileNameTemplate = "/tmp/~OSConfig.ReplacingLines%u";
+    char* tempFileName = NULL;
+    FILE* fileHandle = NULL;
+    FILE* tempHandle = NULL;
+    char* line = NULL;
+    long lineMax = sysconf(_SC_LINE_MAX);
+    long newlineLength = newline ? (long)strlen(newline) : 0;
+    bool skipLine = false;
+    int status = 0;
+
+    if ((NULL == fileName) || (false == FileExists(fileName)) || (NULL == marker))
+    {
+        OsConfigLogError(log, "ReplaceMarkedLinesInFile called with invalid arguments");
+        return EINVAL;
+    }
+    else if (NULL == (line = malloc(lineMax + 1)))
+    {
+        OsConfigLogError(log, "ReplaceMarkedLinesInFile: out of memory");
+        return ENOMEM;
+    }
+
+    if (NULL != (tempFileName = FormatAllocateString(tempFileNameTemplate, rand())))
+    {
+        if (NULL != (fileHandle = fopen(fileName, "r")))
+        {
+            if (NULL != (tempHandle = fopen(tempFileName, "w")))
+            {
+                while (NULL != fgets(line, lineMax + 1, fileHandle))
+                {
+                    if (NULL != strstr(line, marker))
+                    {
+                        if ((commentCharacter != line[0]) && (EOL != line[0]) && (NULL != newline) && (1 < newlineLength))
+                        {
+                            memset(line, 0, lineMax + 1);
+                            memcpy(line, newline, (newlineLength > lineMax) ? lineMax : newlineLength);
+                            skipLine = false;
+                        }
+                        else if (commentCharacter == line[0])
+                        {
+                            skipLine = false;
+                        }
+                        else
+                        {
+                            skipLine = true;
+                        }
+                    }
+
+                    if (false == skipLine)
+                    {
+                        if (EOF == fputs(line, tempHandle))
+                        {
+                            if (0 == (status = errno))
+                            {
+                                status = EPERM;
+                            }
+
+                            OsConfigLogError(log, "ReplaceMarkedLinesInFile: failed writing to temporary file '%s' (%d)", tempFileName, status);
+                        }
+                    }
+
+                    memset(line, 0, lineMax + 1);
+                    skipLine = false;
+                }
+
+                fclose(tempHandle);
+            }
+            else
+            {
+                OsConfigLogError(log, "ReplaceMarkedLinesInFile: failed to create temporary file '%s'", tempFileName);
+                status = EACCES;
+            }
+
+            fclose(fileHandle);
+        }
+        else
+        {
+            OsConfigLogError(log, "ReplaceMarkedLinesInFile: cannot read from '%s'", fileName);
+            status = EACCES;
+        }
+    }
+    else
+    {
+        OsConfigLogError(log, "ReplaceMarkedLinesInFile: out of memory");
+        status = ENOMEM;
+    }
+
+    FREE_MEMORY(line);
+
+    if (0 == status)
+    {
+        if (0 != (status = rename(tempFileName, fileName)))
+        {
+            OsConfigLogError(log, "ReplaceMarkedLinesInFile: rename('%s' to '%s') failed with %d", tempFileName, fileName, errno);
+            status = (0 == errno) ? ENOENT : errno;
+        }
+        
+        remove(tempFileName);
+    }
+
+    FREE_MEMORY(tempFileName);
 
     return status;
 }
@@ -1314,6 +1444,60 @@ int CheckIntegerOptionFromFileLessOrEqualWith(const char* fileName, const char* 
     }
 
     return result;
+}
+
+int SetEtcLoginDefValue(const char* name, const char* value, void* log)
+{
+    const char* etcLoginDefs = "/etc/login.defs";
+    const char* tempLoginDefs = "/etc/~login.defs.copy";
+    const char* newlineTemplate = "%s %s\n";
+    char* newline = NULL;
+    char* original = NULL;
+    int status = 0;
+
+    if ((NULL == name) || (0 == strlen(name)) || (NULL == value) || (0 == strlen(value)))
+    {
+        OsConfigLogError(log, "SetEtcLoginDefValue: invalid argument");
+        return EINVAL;
+    }
+    else if (NULL == (newline = FormatAllocateString(newlineTemplate, name, value)))
+    {
+        OsConfigLogError(log, "SetEtcLoginDefValue: out of memory");
+        return ENOMEM;
+    }
+
+    if (NULL != (original = LoadStringFromFile(etcLoginDefs, false, log)))
+    {
+        if (SavePayloadToFile(tempLoginDefs, original, strlen(original), log))
+        {
+            if (0 == (status = ReplaceMarkedLinesInFile(tempLoginDefs, name, newline, '#', log)))
+            {
+                if (0 != (status = rename(tempLoginDefs, etcLoginDefs)))
+                {
+                    OsConfigLogError(log, "SetEtcLoginDefValue: rename('%s' to '%s') failed with %d", tempLoginDefs, etcLoginDefs, errno);
+                    status = (0 == errno) ? ENOENT : errno;
+                }
+            }
+            
+            remove(tempLoginDefs);
+        }
+        else
+        {
+            OsConfigLogError(log, "SetEtcLoginDefValue: failed saving copy of '%s' to temp file '%s", etcLoginDefs, tempLoginDefs);
+            status = EPERM;
+        }
+
+        FREE_MEMORY(original);
+    }
+    else
+    {
+        OsConfigLogError(log, "SetEtcLoginDefValue: failed reading '%s", etcLoginDefs);
+        status = EACCES;
+    }
+
+    FREE_MEMORY(newline);
+
+    return status;
 }
 
 int CheckLockoutForFailedPasswordAttempts(const char* fileName, char** reason, void* log)
