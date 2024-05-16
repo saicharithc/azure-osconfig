@@ -43,34 +43,34 @@ echo "Enabling Secure ICMP Redirects"
 sudo sysctl -w net.ipv4.conf.default.secure_redirects=1
 
 echo "Disbaling source routed packets"
-sudo net.ipv4.conf.all.accept_source_route=1
+sudo sysctl -w net.ipv4.conf.all.accept_source_route=1
 
 echo "Disbaling source routed packets(ipv6)"
-sudo net.ipv6.conf.all.accept_source_route=1
+sudo sysctl -w net.ipv6.conf.all.accept_source_route=1
 
 echo "Enabling ICMP Redirect Acceptance"
-sudo net.ipv4.conf.default.accept_source_route=1
+sudo sysctl -w net.ipv4.conf.default.accept_source_route=1
 
 echo "Enabling default setting for accepting source routed packets"
-sudo net.ipv6.conf.default.accept_source_route=1
+sudo sysctl -w net.ipv6.conf.default.accept_source_route=1
 
 echo "Disbaling to ignore bogus icmp responses"
-sudo net.ipv4.icmp_ignore_bogus_error_responses=0
+sudo sysctl -w net.ipv4.icmp_ignore_bogus_error_responses=0
 
 echo "Disbaling to ignore ICMP broadcast pings"
-sudo net.ipv4.icmp_echo_ignore_broadcasts=0
+sudo sysctl -w net.ipv4.icmp_echo_ignore_broadcasts=0
 
 echo "Disbaling log martians"
-sudo net.ipv4.conf.all.log_martians=0
+sudo sysctl -w net.ipv4.conf.all.log_martians=0
 
 echo "Disbaling to perform source validation by reversed path"
-sudo net.ipv4.conf.all.rp_filter=0
+sudo sysctl -w net.ipv4.conf.all.rp_filter=0
 
 echo "Disbaling to perform source validation by reversed path by default"
-sudo net.ipv4.conf.default.rp_filter=0
+sudo sysctl -w net.ipv4.conf.default.rp_filter=0
 
 echo "Disabling TCP SYN cookies"
-sudo net.ipv4.tcp_syncookies=0
+sudo sysctl -w net.ipv4.tcp_syncookies=0
 
 
 echo "The system shouldn't act as a network sniffer"
@@ -80,7 +80,7 @@ echo "Ensure ipv6 is disabled"
 disbaleipv6
 
 echo "Enabling packect redirec sending"
-sudo net.ipv4.conf.all.send_redirects=1
-sudo net.ipv4.conf.default.send_redirects=1
+sudo sysctl -w net.ipv4.conf.all.send_redirects=1
+sudo sysctl -w net.ipv4.conf.default.send_redirects=1
 
 
