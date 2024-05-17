@@ -72,6 +72,18 @@ enabletipc(){
     sed -i 's/install tipc \/bin\/false/ /g' /etc/modprobe.d/blacklisttipc.conf
     sudo modprobe tipc 
 }
+enableusbmounting(){
+    # Enabling USB mounting
+    echo "Enabling USB mounting"
+    # Remove the file or entry that says "install usb-storage /bin/true" in modprobe.d
+    sudo sed -i 's/install usb-storage \/bin\/true/ /g' /etc/modprobe.d/*
+}
+enableautofs(){
+    # Enabling autofs
+    echo "Enabling autofs"
+    # Remove the file or entry that says "install autofs /bin/true" in modprobe.d
+    sudo sed -i 's/install autofs \/bin\/true/ /g' /etc/modprobe.d/*
+}
 
 enablecramfs
 enablefreevxfs
@@ -83,3 +95,5 @@ enabledccp
 enablesctp
 enablerds
 enabletipc
+enableusbmounting
+enableautofs

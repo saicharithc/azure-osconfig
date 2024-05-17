@@ -66,8 +66,17 @@ disabletipc(){
     echo "install tipc /bin/false" > /etc/modprobe.d/blacklisttipc.conf
     sudo modprobe -r tipc 
 }
-
-
+disableusbmounting(){
+    # disabling usbmounting package
+    echo "disabling usbmounting package"
+    echo "install usb-storage /bin/false" > /etc/modprobe.d/blacklistusbmounting.conf
+    sudo modprobe -r usb-storage 
+}
+disableautofs(){
+    # disabling autofs package
+    echo "disabling autofs package"
+    sudo $package_manager remove -y autofs
+}
 
 disablecramfs
 disablefreevxfs
@@ -78,3 +87,5 @@ disablerpcsvc
 disabledccp
 disbalesctp
 disabletipc
+disableusbmounting
+disableautofs
