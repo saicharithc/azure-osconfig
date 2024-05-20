@@ -70,19 +70,19 @@ sudo echo "PermitEmptyPasswords no" >> /etc/ssh/sshd_config
 
 #Ensure SSH Idle Timeout Interval is not configured. (110.1)
 echo "Ensure SSH Idle Timeout Interval is not configured"
-sudo sed -i 's/ClientAliveInterval 0/d' /etc/ssh/sshd_config
-sudo sed -i 's/ClientAliveInterval 0/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+sudo sed -i '/ClientAliveInterval 0/d' /etc/ssh/sshd_config
+sudo sed -i '/ClientAliveInterval 0/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 
 #Ensure SSH LoginGraceTime is set to 2 minutes or more. (110.2)
 echo "Ensure SSH LoginGraceTime is set to 2 minutes or more"
-sudo sed -i 's/LoginGraceTime/d' /etc/ssh/sshd_config
-sudo sed -i 's/LoginGraceTime/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+sudo sed -i '/LoginGraceTime/d' /etc/ssh/sshd_config
+sudo sed -i '/LoginGraceTime/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 sudo echo "LoginGraceTime 120" >> /etc/ssh/sshd_config
 
 #Enable non approved MAC algorithms(110.3)
 echo "Enable non approved MAC algorithms"
-sudo sed -i 's/MAC/d' /etc/ssh/sshd_config
-sudo sed -i 's/MAC/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+sudo sed -i '/MAC/d' /etc/ssh/sshd_config
+sudo sed -i '/MAC/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 sudo echo "MACs umac-64@openssh.com,hmac-sha2-256" >> /etc/ssh/sshd_config
 
 #Configure remote/local login warning banner im-properly. (111)
@@ -92,19 +92,19 @@ chmod 777 /etc/azsec/banner.txt
 
 #Disable SSH warning banner (111.2)
 echo "Disable SSH warning banner"
-sudo sed -i 's/Banner/d' /etc/ssh/sshd_config
-sudo sed -i 's/Banner/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+sudo sed -i '/Banner/d' /etc/ssh/sshd_config
+sudo sed -i '/Banner/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 
 #Users are allowed to set environment options for SSH. (112)
 echo "Users are allowed to set environment options for SSH"
-sudo sed -i 's/PermitUserEnvironment no/PermitUserEnvironment yes/g' /etc/ssh/sshd_config
-sudo sed -i 's/PermitUserEnvironment no/PermitUserEnvironment yes/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+sudo sed -i '/PermitUserEnvironment no/PermitUserEnvironment yes/g' /etc/ssh/sshd_config
+sudo sed -i '/PermitUserEnvironment no/PermitUserEnvironment yes/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 
 
 #Non-appropriate ciphers are set for SSH. (Ciphers aes128-ctr,aes192-ctr,aes256-ctr) (113)
 echo "Non-appropriate ciphers are set for SSH"
-sudo sed -i 's/Ciphers/d' /etc/ssh/sshd_config
-sudo sed -i 's/Ciphers/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+sudo sed -i '/Ciphers/d' /etc/ssh/sshd_config
+sudo sed -i '/Ciphers/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 
 
 sudo systemctl restart sshd
