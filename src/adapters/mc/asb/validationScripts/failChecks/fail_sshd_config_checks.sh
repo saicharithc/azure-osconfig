@@ -24,8 +24,8 @@ sudo sed -i 's/Protocol 2/Protocol 1/g' /etc/ssh/sshd_config.d/osconfig_remediat
 
 #set '/etc/ssh/sshd_config IgnoreRhosts = no' (106.3)
 echo "set '/etc/ssh/sshd_config IgnoreRhosts = no'"
-sudo sed -i 's/IgnoreRhosts no/IgnoreRhosts yes/g' /etc/ssh/sshd_config
-sudo sed -i 's/IgnoreRhosts no/IgnoreRhosts yes/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+sudo sed -i 's/IgnoreRhosts yes/IgnoreRhosts no/g' /etc/ssh/sshd_config
+sudo sed -i 's/IgnoreRhosts yes/IgnoreRhosts no/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 
 #Set SSH LogLevel is set to ERROR (106.5)
 echo "Set SSH LogLevel is set to ERROR"
@@ -50,23 +50,23 @@ sudo sed -i 's/RhostsRSAAuthentication no/RhostsRSAAuthentication yes/g' /etc/ss
 sudo echo "RhostsRSAAuthentication yes" >> /etc/ssh/sshd_config
 
 
-#Enable SSH host-based authentication  - '/etc/ssh/sshd_config HostbasedAuthentication = no' (108)
+#Enable SSH host-based authentication  - '/etc/ssh/sshd_config HostbasedAuthentication = yes' (108)
 echo "Enable SSH host-based authentication"
-sudo sed -i 's/HostbasedAuthentication no/HostbasedAuthentication yes/g' /etc/ssh/sshd_config
-sudo sed -i 's/HostbasedAuthentication no/HostbasedAuthentication yes/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+sudo sed -i 's/HostBasedAuthentication no/HostBasedAuthentication yes/g' /etc/ssh/sshd_config
+sudo sed -i 's/HostBasedAuthentication no/HostBasedAuthentication yes/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 sudo echo "HostbasedAuthentication yes" >> /etc/ssh/sshd_config
 
-#Enable root login via SSH. - '/etc/ssh/sshd_config PermitRootLogin = no' (109)
+#Enable root login via SSH. - '/etc/ssh/sshd_config PermitRootLogin = yes' (109)
 echo "Enable root login via SSH"
-sudo sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-sudo sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
-sudo echo "PermitRootLogin no" >> /etc/ssh/sshd_config
+sudo sed -i 's/PermitRootLogin no/PermitRootLogin yes/g' /etc/ssh/sshd_config
+sudo sed -i 's/PermitRootLogin no/PermitRootLogin yes/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+sudo echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
-# Allow remote connections from accounts with empty passwords. - '/etc/ssh/sshd_config PermitEmptyPasswords = no' (110)
+# Allow remote connections from accounts with empty passwords. - '/etc/ssh/sshd_config PermitEmptyPasswords = yes' (110)
 echo "Allow remote connections from accounts with empty passwords"
-sudo sed -i 's/PermitEmptyPasswords yes/PermitEmptyPasswords no/g' /etc/ssh/sshd_config
-sudo sed -i 's/PermitEmptyPasswords yes/PermitEmptyPasswords no/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
-sudo echo "PermitEmptyPasswords no" >> /etc/ssh/sshd_config
+sudo sed -i 's/PermitEmptyPasswords no/PermitEmptyPasswords yes/g' /etc/ssh/sshd_config
+sudo sed -i 's/PermitEmptyPasswords no/PermitEmptyPasswords yes/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+sudo echo "PermitEmptyPasswords yes" >> /etc/ssh/sshd_config
 
 #Ensure SSH Idle Timeout Interval is not configured. (110.1)
 echo "Ensure SSH Idle Timeout Interval is not configured"
@@ -106,5 +106,38 @@ echo "Non-appropriate ciphers are set for SSH"
 sudo sed -i '/Ciphers/d' /etc/ssh/sshd_config
 sudo sed -i '/Ciphers/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 
+#Disable SSH ClientAliveInterval 
+echo "Disable SSH ClientAliveInterval"
+sudo sed -i '/ClientAliveInterval/d' /etc/ssh/sshd_config
+sudo sed -i '/ClientAliveInterval/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+
+#Disable SSH ClientAliveCountMax
+echo "Disable SSH ClientAliveCountMax"
+sudo sed -i '/ClientAliveCountMax/d' /etc/ssh/sshd_config
+sudo sed -i '/ClientAliveCountMax/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+
+#Enable more ssh ports
+echo "Enable more ssh ports"
+sudo echo "Port 33" >> /etc/ssh/sshd_config
+
+#Ensure that the allowed users for SSH access are not configured
+echo "Ensure that the allowed users for SSH access are not configured"
+sudo sed -i '/AllowUsers/d' /etc/ssh/sshd_config
+sudo sed -i '/AllowUsers/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+
+#Ensure that the denied users for SSH are not configured
+echo "Ensure that the denied users for SSH are not configured"
+sudo sed -i '/DenyUsers/d' /etc/ssh/sshd_config
+sudo sed -i '/DenyUsers/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+
+#Ensure that the allowed groups for SSH are not configured
+echo "Ensure that the allowed groups for SSH are not configured"
+sudo sed -i '/AllowGroups/d' /etc/ssh/sshd_config
+sudo sed -i '/AllowGroups/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+
+#Ensure that the denied groups for SSH are not configured
+echo "Ensure that the denied groups for SSH are not configured"
+sudo sed -i '/DenyGroups/d' /etc/ssh/sshd_config
+sudo sed -i '/DenyGroups/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 
 sudo systemctl restart sshd
