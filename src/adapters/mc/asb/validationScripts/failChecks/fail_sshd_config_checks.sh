@@ -97,8 +97,8 @@ sudo sed -i '/Banner/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 
 #Users are allowed to set environment options for SSH. (112)
 echo "Users are allowed to set environment options for SSH"
-sudo sed -i '/PermitUserEnvironment no/PermitUserEnvironment yes/g' /etc/ssh/sshd_config
-sudo sed -i '/PermitUserEnvironment no/PermitUserEnvironment yes/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+sudo sed -i 's/PermitUserEnvironment no/PermitUserEnvironment yes/g' /etc/ssh/sshd_config
+sudo sed -i 's/PermitUserEnvironment no/PermitUserEnvironment yes/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 
 
 #Non-appropriate ciphers are set for SSH. (Ciphers aes128-ctr,aes192-ctr,aes256-ctr) (113)
