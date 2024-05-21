@@ -19,7 +19,7 @@ fi
 
 
 disablePromisc(){
-    sudo sed -i 's/PROMISC/ /g' /etc/sysctl -w network/interfaces
+    sudo sed -i 's/PROMISC/ /g' /etc/sysctl
     sudo sed -i 's/PROMISC/ /g' /etc/rc.local
     interfaces=$(ip link show | awk -F': ' '{print $2}')
     for interface in $interfaces; do

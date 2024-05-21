@@ -21,7 +21,7 @@ fi
 
 echo "unrestricting core dumps"
 sudo sed -i 's/hard core 0/ /g' /etc/security/limits.conf
-sudo fs.suid_dumpable=1
+sudo sysctl fs.suid_dumpable=1
 
 echo "relaxing permissions on /etc/motd"
 #check if motd file exists and create it if it doesn't
