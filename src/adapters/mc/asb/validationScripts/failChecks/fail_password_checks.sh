@@ -22,11 +22,11 @@ fi
 # Ensure password creation requirements are not configured  (5.3.1)
 # Set the following key/value pairs in the appropriate PAM to something other than: minlen=14, minclass = 4, dcredit = -1, ucredit = -1, ocredit = -1, lcredit = -1
 echo "Set the following key/value pairs in the appropriate PAM to something other than: minlen=14, minclass = 4, dcredit = -1, ucredit = -1, ocredit = -1, lcredit = -1"
-sed -i 's/minlen=14/minlen=8/g' /etc/security/pwquality.conf
-sed -i 's/minclass = 4/minclass = 1/g' /etc/security/pwquality.conf
-sed -i 's/dcredit = -1/dcredit = 0/g' /etc/security/pwquality.conf
-sed -i 's/ucredit = -1/ucredit = 0/g' /etc/security/pwquality.conf
-sed -i 's/ocredit = -1/ocredit = 0/g' /etc/security/pwquality.conf
+sudo sed -i 's/minlen=14/minlen=8/g' /etc/pam.d/common-password
+sudo sed -i 's/minclass = 4/minclass = 1/g' /etc/pam.d/common-password
+sudo sed -i 's/dcredit = -1/dcredit = 0/g' /etc/pam.d/common-password
+sudo sed -i 's/ucredit = -1/ucredit = 0/g' /etc/pam.d/common-password
+sudo sed -i 's/ocredit = -1/ocredit = 0/g' /etc/pam.d/common-password
 
 # Ensure lockout for failed password attempts is not configured. (5.3.2)
 # Remove the pam_tally entry in /etc/pam.d/password-auth & /etc/pam.d/system-auth
@@ -35,7 +35,7 @@ sed -i '/pam_tally/d' /etc/pam.d/password-auth
 
 # Enable bootloaders without password protection 
 echo "Enable bootloaders without password protection"
-sude sed -i '/pasword/d' /boot/grub/grub.cfg
+sudo sed -i '/pasword/d' /boot/grub/grub.cfg
 
 
 # Remove root user password
