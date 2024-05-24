@@ -31,6 +31,7 @@ enablePromisc(){
 disbaleipv6(){
     sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
     sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
+    sudo echo 1 > /sys/module/ipv6/parameters/disable
     sudo sed -i 's/net.ipv6.conf.all.disable_ipv6/net.ipv6.conf.all.disable_ipv6=1/g' /etc/sysctl.conf 
     sudo sed -i 's/net.ipv6.conf.default.disable_ipv6/net.ipv6.conf.default.disable_ipv6=1/g' /etc/sysctl.conf 
 }
