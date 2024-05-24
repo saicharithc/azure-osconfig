@@ -88,3 +88,27 @@ sudo sed -i 's/testuser7:x:[0-9]*:/testuser7:x:0:/' /etc/passwd
 #Setting default umask for all users to 777 in login.defs
 echo "Setting default umask for all users to 777 in login.defs"
 sudo sed -i 's/UMASK[ \t]*022/UMASK 777/' /etc/login.defs
+
+#Ensure default group for the root account is GID 100 (157.16)
+echo "Ensure default group for the root account is GID 100"
+sudo usermod -g 100 root
+
+
+
+#Ensure root is not the only UID 0 account (157.18)
+echo "Ensure root is not the only UID 0 account"
+# Create a new user with UID 0
+sudo useradd -ou 0 testuser_uid0
+
+# Ensure shadow group is not empty
+echo "Ensure shadow group is not empty"
+# create a user testuser_shadow
+sudo useradd testuser_shadow
+# Add a user to the shadow group
+sudo usermod -aG shadow testuser_shadow
+
+# Ensure duplicate groups exist
+echo "Ensure duplicate groups exist"
+# Create a new group with the same GID as an existing group
+sudo echo testgroup:x:0: >> /etc/group
+

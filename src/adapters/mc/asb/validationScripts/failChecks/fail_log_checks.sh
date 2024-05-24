@@ -89,3 +89,12 @@ sudo $package_manager remove -y cron
 #Stop AuditD service (systemctl stop auditd)
 echo "stopping auditd service"
 sudo systemctl stop auditd
+
+# Remove syslog
+sudo rm /var/log/syslog*
+
+# Ensure the logrotate (syslog rotater) service is disabled
+echo "disabling logrotate service"
+sudo systemctl disable logrotate
+sudo systemctl stop logrotate
+sudo $package_manager remove -y logrotate

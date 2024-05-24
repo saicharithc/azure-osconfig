@@ -114,3 +114,8 @@ sudo chmod 0600 /etc/at.allow
 sudo touch /etc/cron.allow
 sudo chown root:root /etc/cron.allow
 sudo chmod 0600 /etc/cron.allow
+
+#Ensure permissions on /etc/hosts.allow are configured
+echo "Ensure permissions on /etc/hosts.allow are configured"
+sudo chown root:root /etc/hosts.allow
+sudo chmod 0644 /etc/hosts.allow

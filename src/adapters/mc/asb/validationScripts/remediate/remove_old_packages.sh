@@ -192,6 +192,11 @@ removesamba() {
     echo "removing samba package"
     sudo $package_manager remove -y samba
 }
+removeautofs(){
+    # remove autofs package
+    echo "removing autofs package"
+    sudo $package_manager remove -y autofs
+}
 
 removeinetd
 removexinetd
@@ -218,3 +223,4 @@ removersync
 removenis
 removershclient
 removesamba
+removeautofs

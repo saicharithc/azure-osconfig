@@ -98,3 +98,7 @@ sudo chmod 777 /etc/cron.weekly
 echo "restricting at/cron to authorized users"
 sudo touch /etc/at.deny
 sudo touch /etc/cron.deny
+
+#Ensure permissions on /etc/hosts.allow are not configured
+echo "Ensure permissions on /etc/hosts.allow are not configured"
+sudo chmod 777 /etc/hosts.allow

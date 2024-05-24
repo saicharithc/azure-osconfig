@@ -220,6 +220,11 @@ installrshclient() {
         sudo zypper install -y rsh-client
     fi
 }
+installautofs(){
+    # Install autofs package
+    echo "installing autofs package"
+    sudo $package_manager install -y autofs
+}
 
 
 installinetd
@@ -249,6 +254,7 @@ installbind9
 installrsync
 installnis
 installrshclient
+installautofs
 
 
 

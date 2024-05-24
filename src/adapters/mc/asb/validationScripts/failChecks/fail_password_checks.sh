@@ -100,13 +100,3 @@ echo "Ensure system accounts are not non-login"
 sudo sed -i 's/syslog:x:102:106::\/home\/syslog:\/usr\/sbin\/nologin/syslog:x:102:106::\/home\/syslog:\/bin\/bash/g' /etc/passwd
 
 
-#Ensure default group for the root account is GID 100 (157.16)
-echo "Ensure default group for the root account is GID 100"
-sudo usermod -g 100 root
-
-
-
-#Ensure root is not the only UID 0 account (157.18)
-echo "Ensure root is not the only UID 0 account"
-# Create a new user with UID 0
-sudo useradd -ou 0 testuser_uid0
