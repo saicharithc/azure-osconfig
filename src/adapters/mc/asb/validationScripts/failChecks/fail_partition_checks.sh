@@ -22,44 +22,55 @@ fi
 #Remove ""/var/home.partition /home ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 echo "Remove ""/var/home.partition /home ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 sed -i '/\/var\/home.partition \/home ext2 loop,noexec,nosuid,nodev,rw 0 0/d' /etc/fstab
+echo "\var\home.partition /home ext2 rw 0 0" >> /etc/fstab
 
 
 #Remove ""/var/home.partition /tmp ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 echo "Remove ""/var/home.partition /tmp ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 sed -i '/\/var\/home.partition \/tmp ext2 loop,noexec,nosuid,nodev,rw 0 0/d' /etc/fstab
+echo "\var\home.partition /tmp ext2 rw 0 0" >> /etc/fstab
 
 #Remove ""/var/home.partition /var/tmp ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 echo "Remove ""/var/home.partition /var/tmp ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 sed -i '/\/var\/home.partition \/var\/tmp ext2 loop,noexec,nosuid,nodev,rw 0 0/d' /etc/fstab
+echo "\var\home.partition /var/tmp ext2 rw 0 0" >> /etc/fstab
 
 #Remove ""/var/home.partition /tmp ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 echo "Remove ""/var/home.partition /tmp ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 sed -i '/\/var\/home.partition \/tmp ext2 loop,noexec,nosuid,nodev,rw 0 0/d' /etc/fstab
+echo "\var\home.partition /tmp ext2 rw 0 0" >> /etc/fstab
 
 #Remove ""/var/home.partition /var/tmp ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 echo "Remove ""/var/home.partition /var/tmp ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 sed -i '/\/var\/home.partition \/var\/tmp ext2 loop,noexec,nosuid,nodev,rw 0 0/d' /etc/fstab
+echo "\var\home.partition /var/tmp ext2 rw 0 0" >> /etc/fstab
 
 #Remove ""/var/home.partition /var/tmp ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 echo "Remove ""/var/home.partition /var/tmp ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 sed -i '/\/var\/home.partition \/var\/tmp ext2 loop,noexec,nosuid,nodev,rw 0 0/d' /etc/fstab
+echo "\var\home.partition /var/tmp ext2 rw 0 0" >> /etc/fstab
 
 #Remove ""/var/home.partition /dev/shm ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 echo "Remove ""/var/home.partition /dev/shm ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 sed -i '/\/var\/home.partition \/dev\/shm ext2 loop,noexec,nosuid,nodev,rw 0 0/d' /etc/fstab
+echo "\var\home.partition /dev/shm ext2 rw 0 0" >> /etc/fstab
 
 #Remove ""/var/home.partition /media/extdev ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 echo "Remove ""/var/home.partition /media/extdev ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 sed -i '/\/var\/home.partition \/media\/extdev ext2 loop,noexec,nosuid,nodev,rw 0 0/d' /etc/fstab
+echo "\var\home.partition /media/extdev ext2 rw 0 0" >> /etc/fstab
 
 #Remove ""/var/home.partition /media/extdev ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 echo "Remove ""/var/home.partition /media/extdev ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 sed -i '/\/var\/home.partition \/media\/extdev ext2 loop,noexec,nosuid,nodev,rw 0 0/d' /etc/fstab
+echo "\var\home.partition /media/extdev ext2 rw 0 0" >> /etc/fstab
 
 #Remove ""/var/home.partition /media/extdev ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 echo "Remove ""/var/home.partition /media/extdev ext2 loop,noexec,nosuid,nodev,rw 0 0"" into /etc/fstab"
 sed -i '/\/var\/home.partition \/media\/extdev ext2 loop,noexec,nosuid,nodev,rw 0 0/d' /etc/fstab
+echo "\var\home.partition /media/extdev ext2 rw 0 0" >> /etc/fstab
 
 #Remove ""192.168.0.216:/mnt/HDD1    /media/freenas/    nfs    defaults,noexec,nosuid,proto=tcp,port=2049    0 0"" into /etc/fstab"
 echo "Remove ""192.168.0.216:/mnt/HDD1    /media/freenas/    nfs    defaults,noexec,nosuid,proto=tcp,port=2049    0 0"" into /etc/fstab"
 sed -i '/:\/mnt\/HDD1    \/media\/freenas|/    nfs    defaults,noexec,nosuid,proto=tcp,port=2049    0 0/d' /etc/fstab
+echo "\mnt\HDD1    /media/freenas/    nfs    defaults,proto=tcp,port=2049    0 0" >> /etc/fstab

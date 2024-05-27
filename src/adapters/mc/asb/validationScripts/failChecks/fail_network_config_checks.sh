@@ -84,4 +84,8 @@ echo "Enabling packect redirec sending"
 sudo sysctl -w net.ipv4.conf.all.send_redirects=1
 sudo sysctl -w net.ipv4.conf.default.send_redirects=1
 
+#Ensure zeroconf networking is enabled
+echo "Ensure zeroconf networking is enabled"
+echo "ipv4ll" >> /etc/network/interfaces
+
 

@@ -140,4 +140,14 @@ echo "Ensure that the denied groups for SSH are not configured"
 sudo sed -i '/DenyGroups/d' /etc/ssh/sshd_config
 sudo sed -i '/DenyGroups/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 
+# Ensure the remote login warning banner is not properly configured
+echo "Ensure the remote login warning banner is not properly configured"
+echo "\m" >> /etc/issue.net 
+
+# Ensure the local login warning banner is not properly configured
+echo "\r" >> /etc/issue
+
+
 sudo systemctl restart sshd
+
+
