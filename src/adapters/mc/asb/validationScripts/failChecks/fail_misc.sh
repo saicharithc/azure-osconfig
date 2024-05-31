@@ -21,9 +21,11 @@ fi
 
 # Disable randomize_va_space
 echo "Disable randomize_va_space"
-sudo echo 0 > sudo  /proc/sys/kernel/randomize_va_space
+sudo sysctl -w kernel.randomize_va_space=0
 
 # Ensure '.' appears in root's $PATH
 echo "Ensure '.' appears in root's $PATH"
-sudo echo "export PATH=$PATH:." >> /root/.bashrc
+sudo echo "PATH=$PATH:." > /root/.bashrc
+sudo echo "PATH=$PATH:." > /root/.profile
+sudo echo "PATH=$PATH:." > /etc/environment
 

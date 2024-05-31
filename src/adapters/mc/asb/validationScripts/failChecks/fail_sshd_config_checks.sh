@@ -26,6 +26,7 @@ sudo sed -i 's/Protocol 2/Protocol 1/g' /etc/ssh/sshd_config.d/osconfig_remediat
 echo "set '/etc/ssh/sshd_config IgnoreRhosts = no'"
 sudo sed -i 's/IgnoreRhosts yes/IgnoreRhosts no/g' /etc/ssh/sshd_config
 sudo sed -i 's/IgnoreRhosts yes/IgnoreRhosts no/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+sudo echo "IgnoreRhosts no" >> /etc/ssh/sshd_config
 
 #Set SSH LogLevel is set to ERROR (106.5)
 echo "Set SSH LogLevel is set to ERROR"
@@ -99,7 +100,7 @@ sudo sed -i '/Banner/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 echo "Users are allowed to set environment options for SSH"
 sudo sed -i 's/PermitUserEnvironment no/PermitUserEnvironment yes/g' /etc/ssh/sshd_config
 sudo sed -i 's/PermitUserEnvironment no/PermitUserEnvironment yes/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
-
+sudo echo "PermitUserEnvironment yes" >> /etc/ssh/sshd_config
 
 #Non-appropriate ciphers are set for SSH. (Ciphers aes128-ctr,aes192-ctr,aes256-ctr) (113)
 echo "Non-appropriate ciphers are set for SSH"
@@ -110,11 +111,13 @@ sudo sed -i '/Ciphers/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 echo "Disable SSH ClientAliveInterval"
 sudo sed -i '/ClientAliveInterval/d' /etc/ssh/sshd_config
 sudo sed -i '/ClientAliveInterval/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+echo "ClientAliveInterval 0" >> /etc/ssh/sshd_config
 
 #Disable SSH ClientAliveCountMax
 echo "Disable SSH ClientAliveCountMax"
 sudo sed -i '/ClientAliveCountMax/d' /etc/ssh/sshd_config
 sudo sed -i '/ClientAliveCountMax/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+echo "ClientAliveCountMax 3" >> /etc/ssh/sshd_config
 
 #Enable more ssh ports
 echo "Enable more ssh ports"
@@ -142,10 +145,10 @@ sudo sed -i '/DenyGroups/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
 
 # Ensure the remote login warning banner is not properly configured
 echo "Ensure the remote login warning banner is not properly configured"
-echo "\m" >> /etc/issue.net 
+echo "\\m\\r" >> /etc/issue.net 
 
 # Ensure the local login warning banner is not properly configured
-echo "\r" >> /etc/issue
+echo "\\r\\s" >> /etc/issue
 
 
 sudo systemctl restart sshd

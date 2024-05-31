@@ -73,7 +73,7 @@ installtftpd(){
     if [ "$package_manager" = "yum" ]; then
         sudo yum install -y tftp-server 
     elif [ "$package_manager" = "apt-get" ]; then
-        sudo apt-get install -y tftpd 
+        sudo apt-get install -y tftpd-hpa 
     elif [ "$package_manager" = "zypher" ]; then
         sudo zypper install -y tftp-server 
     fi
@@ -101,6 +101,7 @@ installkdumputils(){
 installavahidaemon(){
     # Install avahi-daemon package
     sudo $package_manager install -y avahi-daemon
+    sudo systemctl restart avahi-daemon.service
 }
 installcups(){
     # Install cups package
