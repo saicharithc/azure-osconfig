@@ -23,10 +23,9 @@ sudo ./fail_partition_checks.sh
 sudo ./install_old_packages.sh
 sudo ./enable_old_packages.sh
 sudo ./fail_misc.sh
-sudo ./fail_user_group_checks.sh
+# sudo ./fail_user_group_checks.sh
 
 # add a comment block
-# sudo apt-get update
 # wget https://raw.githubusercontent.com/saicharithc/azure-osconfig/user/saicharithc/asmv2_validation_scripts/src/adapters/mc/asb/validationScripts/failChecks/fail_checks.sh
 # chmod 777 fail_checks.sh
 # sudo ./fail_checks.sh
