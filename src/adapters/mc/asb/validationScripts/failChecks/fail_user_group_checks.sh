@@ -38,9 +38,10 @@ done
 #Ensure no users have .forward, .net, .rhost files 
 echo "Creating user with a .forward, .net, .rhost files"
 sudo useradd -m testuser3
+sudo chmod 777 -R /home/testuser3
 sudo echo "testuser3: /dev/null" >> /home/testuser3/.forward
-sudo echo "testuser3: /dev/null" >> /home/testuser3/.net
-sudo echo "testuser3: /dev/null" >> /home/testuser3/.rhost
+sudo echo "testuser3: /dev/null" >> /home/testuser3/.netrc
+sudo echo "testuser3: /dev/null" >> /home/testuser3/.rhosts
 
 
 #Ensure all groups in /etc/passwd exist in /etc/group (6.2.15)
@@ -65,7 +66,10 @@ sudo echo "root:x:1:" >> /etc/group
 
 #Adding user entries in shadow group
 echo "Adding user entries in shadow group in /etc/group"
-sudo echo "shadow:x:42:" >> /etc/group
+sudo groupadd shadow
+sudo useradd -m testuser_shadow
+sudo adduser testuser_shadow shadow
+
 
 #Remove the line 'auth required pam_wheel.so use_uid' to the file '/etc/pam.d/su'
 echo "Removing the line 'auth required pam_wheel.so use_uid' to /etc/pam.d/su"  
@@ -100,15 +104,12 @@ echo "Ensure root is not the only UID 0 account"
 # Create a new user with UID 0
 sudo useradd -ou 0 testuser_uid0
 
-# Ensure shadow group is not empty
-echo "Ensure shadow group is not empty"
-# create a user testuser_shadow
-sudo useradd testuser_shadow
-# Add a user to the shadow group
-sudo usermod -aG shadow testuser_shadow
 
 # Ensure duplicate groups exist
 echo "Ensure duplicate groups exist"
 # Create a new group with the same GID as an existing group
 sudo echo testgroup:x:0: >> /etc/group
 
+# World writable . files
+echo "World writable . files"
+chmod 777 ~/.bashrc

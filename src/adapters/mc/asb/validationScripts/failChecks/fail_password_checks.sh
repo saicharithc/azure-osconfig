@@ -44,7 +44,7 @@ sudo passwd -d root
 
 # Ensure legacy + entries exist in /etc/passwd (156.1)
 echo "Ensure legacy + entries exist in /etc/passwd"
-echo "+::::::" >> /etc/passwd
+echo "+::::::::" >> /etc/passwd
 
 
 # Ensure legacy + entries exist in /etc/shadow (156.2)
@@ -73,11 +73,8 @@ sudo sed -i 's/remember=*/remember=5/g' /etc/pam.d/password_auth
 
 # Ensure password hashing algorithm is not SHA-512 (157.11)
 echo "Ensure password hashing algorithm is not SHA-512"
-# Update /etc/pam.d/common-password entry to  password    [success=1 default=ignore]    pam_unix.so obscure sha256
-# Create a new user and set a password.
-echo "Create a new user and set a password"
-sudo sed -i 's/pam_unix.so obscure */pam_unix.so obscure sha256/g' /etc/pam.d/common-password
-sudo useradd testuser_passwd
+sudo sed -i 's/SHA512/SHA256/g' /etc/login.defs
+
 
 # Ensure minimum days between password changes is 6 or less. (157.12)
 echo "Ensure minimum days between password changes is 6 or less."
@@ -99,4 +96,11 @@ echo "Ensure system accounts are not non-login"
 # Replace 'syslog:x:102:106::/home/syslog:/usr/sbin/nologin' to 'syslog:x:102:106::/home/syslog:/bin/bash'
 sudo sed -i 's/syslog:x:102:106::\/home\/syslog:\/usr\/sbin\/nologin/syslog:x:102:106::\/home\/syslog:\/bin\/bash/g' /etc/passwd
 
+
+#Ensure password expiration is configured to more than 365 days (157.17)
+echo "Ensure password expiration is configured to more than 365 days"
+sudo sed -i 's/PASS_MAX_DAYS.*/PASS_MAX_DAYS 366/g' /etc/login.defs
+# Create a user with a password
+sudo useradd -m testuserWithPassword
+sudo passwd testuserWithPassword
 

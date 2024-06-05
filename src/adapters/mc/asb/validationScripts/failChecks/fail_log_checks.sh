@@ -39,8 +39,9 @@ sudo $package_manager remove -y syslog-ng
 echo "removing syslog-ng-core package"
 sudo $package_manager remove -y syslog-ng-core
 
-echo "removing systemd-journald package"
-sudo $package_manager remove -y systemd-journald
+echo "stopping systemd-journald package"
+sudo systemctl stop systemd-journald*
+
 
 echo "Relaxing permissions on /etc/rsyslog.conf & /etc/syslog-ng/syslog-ng.conf"
 sudo chmod 777 /etc/rsyslog.conf
@@ -48,6 +49,7 @@ sudo chmod 777 /etc/syslog-ng/syslog-ng.conf
 
 #Add the line '$FileCreateMode 777' to the file '/etc/rsyslog.conf' and restart
 echo "Relaxing permissions on /etc/rsyslog.conf and restarting"
+sudo sed -i '/$FileCreateMode/d' /etc/rsyslog.conf
 echo '$FileCreateMode 777' >> /etc/rsyslog.conf
 sudo systemctl restart rsyslog
 

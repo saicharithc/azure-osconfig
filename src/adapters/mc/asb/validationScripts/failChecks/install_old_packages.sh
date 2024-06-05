@@ -73,10 +73,12 @@ installtftpd(){
     if [ "$package_manager" = "yum" ]; then
         sudo yum install -y tftp-server 
     elif [ "$package_manager" = "apt-get" ]; then
-        sudo apt-get install -y tftpd-hpa 
+        sudo apt-get install -y tftpd-hpa
+        sudo apt-get install -y tftpd
     elif [ "$package_manager" = "zypher" ]; then
         sudo zypper install -y tftp-server 
     fi
+    sudo echo "tftp" >> sudo /etc/inetd.conf
 }
 installfedorareadahed(){
     # Install fedora-release package
@@ -144,8 +146,7 @@ installrpcgssd(){
 installrpcidmapd(){
     # Install rpcidmapd package
     echo "installing rpcidmapd package"
-    sudo $package_manager install -y nfs-common
-    sudo systemctl restart rpc-idmapd
+    sudo $package_manager install -y nfs-common nfs-kernel-server
 }
 installnfs(){
     # Install nfs package
@@ -181,6 +182,7 @@ installsamba() {
     # Install samba package
     echo "installing samba package"
     sudo $package_manager install -y samba
+    sudo systemctl restart smbd
 }
 installbind9() {
     # Install bind9 package
@@ -197,6 +199,8 @@ installrsync() {
     # Install rsync package
     echo "installing rsync package"
     sudo $package_manager install -y rsync
+    sudo touch /etc/rsyncd.conf
+    sudo systemctl restart rsync
 }
 installnis(){
     # Install nis package
@@ -226,7 +230,13 @@ installautofs(){
     echo "installing autofs package"
     sudo $package_manager install -y autofs
 }
-
+installrpcgssd(){
+    # Install rpcgssd package
+    echo "installing rpcgssd package"
+    sudo $package_manager install -y nfs-kernel-server
+    sudo touch /etc/krb5.keytab
+    sudo systemctl restart rpc-gssd
+}
 
 installinetd
 installxinetd
@@ -257,5 +267,5 @@ installnis
 installrshclient
 installautofs
 
-
+installrpcgssd
 

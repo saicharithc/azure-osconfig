@@ -1,0 +1,3 @@
+Ensure the inactive password lock period is configured      Needs manaul work
+telent
+rpcidmapd  sudo status nfs-idmapd restart
