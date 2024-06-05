@@ -23,8 +23,7 @@ sudo ./fail_partition_checks.sh
 sudo ./install_old_packages.sh
 sudo ./enable_old_packages.sh
 sudo ./fail_misc.sh
-
-# sudo ./fail_user_group_checks.sh
+sudo ./fail_user_group_checks.sh
 
 # add a comment block
 # sudo apt-get update
