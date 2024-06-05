@@ -102,5 +102,6 @@ echo "Ensure password expiration is configured to more than 365 days"
 sudo sed -i 's/PASS_MAX_DAYS.*/PASS_MAX_DAYS 366/g' /etc/login.defs
 # Create a user with a password
 sudo useradd -m testuserWithPassword
+echo "set password for testuserWithPassword"
 sudo passwd testuserWithPassword
 
