@@ -58,7 +58,7 @@ echo "setting permissions on /etc/gshadow-"
 sudo chmod 777 /etc/gshadow-
 
 echo "setting permissions on /etc/passwd"
-sudo chown root:root /etc/passwd
+# sudo chown root:root /etc/passwd
 sudo chmod 777 /etc/passwd
 
 echo "setting permissions on /etc/group"
@@ -70,8 +70,8 @@ sudo chmod 777 /etc/passwd-
 echo "setting permissions on /etc/group-"
 sudo chmod 777 /etc/group-
 
-echo "setting permissions on user home directories"
-sudo chmod 777 /home/*
+# echo "setting permissions on user home directories"
+# sudo chmod 777 /home/*
 
 echo "setting permissions on bootloader config"
 sudo chmod 777 /boot/grub/grub.cfg
