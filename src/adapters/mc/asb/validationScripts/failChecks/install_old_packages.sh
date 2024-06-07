@@ -162,6 +162,9 @@ installsnmpd(){
     # Install snmpd package
     echo "installing snmpd package"
     sudo $package_manager install -y snmpd
+    #replace port info in snmpd.conf
+    sudo sed -i 's/agentaddress  127.0.0.1,*/agentaddress  127.0.0.1,6754/g' /etc/snmp/snmpd.conf
+    sudo systemctl restart snmpd
 }
 
 
