@@ -70,9 +70,10 @@ sudo sed -i 's/PermitEmptyPasswords no/PermitEmptyPasswords yes/g' /etc/ssh/sshd
 sudo echo "PermitEmptyPasswords yes" >> /etc/ssh/sshd_config
 
 #Ensure SSH Idle Timeout Interval is not configured. (110.1)
-echo "Ensure SSH Idle Timeout Interval is not configured"
-sudo sed -i '/ClientAliveInterval 0/d' /etc/ssh/sshd_config
-sudo sed -i '/ClientAliveInterval 0/d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+# echo "Ensure SSH Idle Timeout Interval is not configured"
+# sudo sed -i '/ClientAliveInterval /d' /etc/ssh/sshd_config
+# sudo sed -i '/ClientAliveInterval /d' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+# sudo echo "ClientAliveInterval 0" >> /etc/ssh/sshd_config
 
 #Ensure SSH LoginGraceTime is set to 2 minutes or more. (110.2)
 echo "Ensure SSH LoginGraceTime is set to 2 minutes or more"

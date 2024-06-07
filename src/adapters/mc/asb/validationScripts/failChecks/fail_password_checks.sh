@@ -44,12 +44,12 @@ sudo passwd -d root
 
 # Ensure legacy + entries exist in /etc/passwd (156.1)
 echo "Ensure legacy + entries exist in /etc/passwd"
-echo "+::::::::" >> /etc/passwd
+echo "+:x:::::" >> /etc/passwd
 
 
 # Ensure legacy + entries exist in /etc/shadow (156.2)
 echo "Ensure legacy + entries exist in /etc/shadow"
-echo "+::::::::" >> /etc/shadow
+echo "+:!:::::::" >> /etc/shadow
 
 # Ensure legacy + entries exist in /etc/group (156.3)
 echo "Ensure legacy + entries exist in /etc/group"

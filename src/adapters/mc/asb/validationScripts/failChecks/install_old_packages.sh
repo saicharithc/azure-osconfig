@@ -74,7 +74,6 @@ installtftpd(){
         sudo yum install -y tftp-server 
     elif [ "$package_manager" = "apt-get" ]; then
         sudo apt-get install -y tftpd-hpa
-        sudo apt-get install -y tftpd
     elif [ "$package_manager" = "zypher" ]; then
         sudo zypper install -y tftp-server 
     fi
