@@ -28,9 +28,9 @@ sudo ./fail_user_group_checks.sh
 sudo ./fail_misc.sh
 sudo ./fail_network_config_checks.sh
 
-# add a comment block
-# wget https://raw.githubusercontent.com/saicharithc/azure-osconfig/user/saicharithc/asmv2_validation_scripts/src/adapters/mc/asb/validationScripts/failChecks/fail_checks.sh
-# chmod 777 fail_checks.sh
-# sudo ./fail_checks.sh
-
+BEGINCOMMENT
+    wget https://raw.githubusercontent.com/saicharithc/azure-osconfig/user/saicharithc/asmv2_validation_scripts/src/adapters/mc/asb/validationScripts/failChecks/fail_checks.sh
+    chmod 777 fail_checks.sh
+    sudo ./fail_checks.sh
+ENDCOMMENT
 
