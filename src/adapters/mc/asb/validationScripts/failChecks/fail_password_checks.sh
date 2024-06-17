@@ -42,24 +42,26 @@ sudo sed -i '/pasword/d' /boot/grub/grub.cfg
 echo "Remove root user password"
 sudo passwd -d root 
 
-# Ensure legacy + entries exist in /etc/passwd (156.1)
-echo "Ensure legacy + entries exist in /etc/passwd"
-echo "+:x:::::" >> /etc/passwd
+# # Ensure legacy + entries exist in /etc/passwd (156.1)
+# echo "Ensure legacy + entries exist in /etc/passwd"
+# echo "+:x:::::" >> /etc/passwd
 
 
-# Ensure legacy + entries exist in /etc/shadow (156.2)
-echo "Ensure legacy + entries exist in /etc/shadow"
-echo "+:!:::::::" >> /etc/shadow
+# # Ensure legacy + entries exist in /etc/shadow (156.2)
+# echo "Ensure legacy + entries exist in /etc/shadow"
+# echo "+:!:::::::" >> /etc/shadow
 
-# Ensure legacy + entries exist in /etc/group (156.3)
-echo "Ensure legacy + entries exist in /etc/group"
-echo "+:::" >> /etc/group
+# # Ensure legacy + entries exist in /etc/group (156.3)
+# echo "Ensure legacy + entries exist in /etc/group"
+# echo "+:::" >> /etc/group
 
 
 
 #Ensure password expiration is 366 days or more. (157.1)
 echo "Ensure password expiration is 366 days or more."
-sudo sed -i 's/PASS_MAX_DAYS.*/PASS_MAX_DAYS 366/g' /etc/login.defs
+sudo sed -i 's/#\sPASS_MAX_DAYS.*/PASS_MAX_DAYS 1366/g' /etc/login.defs
+sudo useradd testuser_pwd_checks1
+
 
 # Ensure password expiration warning days is 6 or less. (157.2)
 echo "Ensure password expiration warning days is 6 or less."
@@ -90,6 +92,11 @@ echo "Ensure all users last password change date is not in the past"
 # Ensure inactive password lock is 31 days or more (157.14)
 echo "Ensure inactive password lock is 31 days or more"
 sudo sed -i 's/PASS_MAX_DAYS.*/PASS_MAX_DAYS 31/g' /etc/login.defs
+
+sudo timedatectl set-time 2023-09-16
+sudo passwd
+sudo timedatectl set-time 2023-06-16
+
 
 #Ensure system accounts are not non-login (157.15)
 echo "Ensure system accounts are not non-login"

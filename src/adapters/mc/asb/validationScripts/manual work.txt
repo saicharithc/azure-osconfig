@@ -1,3 +1,7 @@
 Ensure the inactive password lock period is configured      Needs manaul work
 telent
 rpcidmapd  sudo status nfs-idmapd restart
+
+Ensure password expiration is configured
+Ensure the inactive password lock period is configured
+Ensure authentication is required for single user mode

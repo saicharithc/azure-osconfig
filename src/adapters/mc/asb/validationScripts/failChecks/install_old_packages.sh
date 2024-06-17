@@ -52,6 +52,7 @@ installtelnetd() {
     elif [ "$package_manager" = "zypher" ]; then
         sudo zypper install -y telnetd 
     fi
+    echo "telnet" >> /etc/inetd.conf
 }
 installrcprsh(){
     # Install cprsh package
@@ -184,6 +185,7 @@ installsamba() {
     # Install samba package
     echo "installing samba package"
     sudo $package_manager install -y samba
+    echo "min protocol = SMB2" >> /etc/samba/smb.conf
     sudo systemctl restart smbd
 }
 installbind9() {
