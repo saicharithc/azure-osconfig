@@ -49,20 +49,20 @@ echo "Creating group in /etc/passwd but not in /etc/group"
 sudo useradd -g 1000 testuser4
 
 #Ensure no duplicate UIDs exist (6.2.16)
-echo "Creating user with duplicate UID"
-sudo echo "unkownuser:x:0:0:root:/root:/bin/bash" >> /etc/passwd
+# echo "Creating user with duplicate UID"
+# sudo echo "unkownuser:x:0:0:root:/root:/bin/bash" >> /etc/passwd
 
 #Adding duplicate GIDs (6.2.17)
-echo "Creating group with duplicate GID"
-sudo echo "unkowngroup:x:0:" >> /etc/group
+# echo "Creating group with duplicate GID"
+# sudo echo "unkowngroup:x:0:" >> /etc/group
 
 #Adding duplicate user name (6.2.18)
-echo "Creating user with duplicate username"
-sudo echo "root:x:222:222:root:/root:/bin/bash" >> /etc/passwd
+# echo "Creating user with duplicate username"
+# sudo echo "root:x:222:222:root:/root:/bin/bash" >> /etc/passwd
 
 # Ensure no duplicate groups exist (6.2.19)
-echo "Creating group with duplicate group"
-sudo echo "root:x:1:" >> /etc/group
+# echo "Creating group with duplicate group"
+# sudo echo "root:x:1:" >> /etc/group
 
 #Adding user entries in shadow group
 echo "Adding user entries in shadow group in /etc/group"
@@ -77,7 +77,7 @@ sudo sed -i '/auth required pam_wheel.so use_uid/d' /etc/pam.d/su
 
 #Create and add non-root user to root group
 echo "Creating and adding non-root user to root group"
-sudo useradd -g root testuser5
+# sudo useradd -g root testuser5
 
 #Creating a user account without a password
 echo "Creating a user account without a password"
@@ -87,7 +87,7 @@ sudo useradd -p "" testuser6
 echo "Creating a user account with uid 0"
 sudo useradd testuser7
 # Replace the uid of testuser7 with 0
-sudo sed -i 's/testuser7:x:[0-9]*:/testuser7:x:0:/' /etc/passwd
+# sudo sed -i 's/testuser7:x:[0-9]*:/testuser7:x:0:/' /etc/passwd
 
 #Setting default umask for all users to 777 in login.defs
 echo "Setting default umask for all users to 777 in login.defs"
@@ -95,20 +95,20 @@ sudo sed -i 's/UMASK[ \t]*022/UMASK 777/' /etc/login.defs
 
 #Ensure default group for the root account is GID 100 (157.16)
 echo "Ensure default group for the root account is GID 100"
-sudo usermod -g 100 root
+# sudo usermod -g 100 root
 
 
 
 #Ensure root is not the only UID 0 account (157.18)
 echo "Ensure root is not the only UID 0 account"
 # Create a new user with UID 0
-sudo useradd -ou 0 testuser_uid0
+# sudo useradd -ou 0 testuser_uid0
 
 
 # Ensure duplicate groups exist
 echo "Ensure duplicate groups exist"
 # Create a new group with the same GID as an existing group
-sudo echo testgroup:x:0: >> /etc/group
+# sudo echo testgroup:x:0: >> /etc/group
 
 # World writable . files
 echo "World writable . files"

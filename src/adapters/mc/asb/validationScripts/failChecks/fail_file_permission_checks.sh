@@ -37,9 +37,15 @@ echo "restricting permissions on /etc/issue.net"
 sudo chmod 777 /etc/issue.net
 
 echo "restricting permissions on /etc/hosts.allow"
+if [ ! -f /etc/hosts.allow ]; then
+    sudo touch /etc/hosts.allow
+fi
 sudo chmod 777 /etc/hosts.allow
 
 echo "restricting permissions on /etc/hosts.deny"
+if [ ! -f /etc/hosts.deny ]; then
+    sudo touch /etc/hosts.deny
+fi
 sudo chmod 777 /etc/hosts.deny
 
 echo "restricting permissions on /etc/ssh/sshd_config"

@@ -233,6 +233,7 @@ installautofs(){
     # Install autofs package
     echo "installing autofs package"
     sudo $package_manager install -y autofs
+    sudo systemctl restart autofs
 }
 installrpcgssd(){
     # Install rpcgssd package
