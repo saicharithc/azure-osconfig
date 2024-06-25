@@ -86,6 +86,9 @@ echo "rlogin stream tcp nowait root /usr/sbin/tcpd in.rlogind" >> "/etc/inetd.co
 #remove cron-package
 echo "removing cron package"
 sudo $package_manager remove -y cron
+sudo $package_manager remove -y cronie
+sudo systemctl stop crond
+
 
 
 #Stop AuditD service (systemctl stop auditd)

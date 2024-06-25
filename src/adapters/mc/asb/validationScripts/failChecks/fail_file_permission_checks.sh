@@ -79,8 +79,8 @@ sudo chmod 777 /etc/group-
 # echo "setting permissions on user home directories"
 # sudo chmod 777 /home/*
 
-echo "setting permissions on bootloader config"
-sudo chmod 777 /boot/grub/grub.cfg
+# echo "setting permissions on bootloader config"
+# sudo chmod 777 /boot/grub/grub.cfg
 
 echo "setting permissions on /etc/anacrontab"
 sudo $package_manager install anacron

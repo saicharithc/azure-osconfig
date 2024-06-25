@@ -34,8 +34,8 @@ echo "Remove the pam_tally entry in /etc/pam.d/password-auth & /etc/pam.d/system
 sed -i '/pam_tally/d' /etc/pam.d/password-auth
 
 # Enable bootloaders without password protection 
-echo "Enable bootloaders without password protection"
-sudo sed -i '/pasword/d' /boot/grub/grub.cfg
+# echo "Enable bootloaders without password protection"
+# sudo sed -i '/pasword/d' /boot/grub/grub.cfg
 
 
 # Remove root user password

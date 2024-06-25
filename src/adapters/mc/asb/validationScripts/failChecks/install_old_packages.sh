@@ -47,6 +47,7 @@ installtelnetd() {
     echo "installing telnetd package"
     if [ "$package_manager" = "yum" ]; then
         sudo yum install -y telnet-server 
+        sudo yum install -y telnet
     elif [ "$package_manager" = "apt-get" ]; then
         sudo apt-get install -y telnetd 
     elif [ "$package_manager" = "zypher" ]; then
@@ -58,6 +59,9 @@ installrcprsh(){
     # Install cprsh package
     echo "installing cprsh package"
     if [ "$package_manager" = "yum" ]; then
+        if [ "$os_name" = "rhel" ] && [[ "$os_version" = 9* ]]; then
+            sudo yum install -y rsh-server
+        fi
         sudo yum install -y rsh-server
         sudo yum install rpcbind 
     elif [ "$package_manager" = "apt-get" ]; then

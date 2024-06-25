@@ -82,6 +82,7 @@ echo "Creating and adding non-root user to root group"
 #Creating a user account without a password
 echo "Creating a user account without a password"
 sudo useradd -p "" testuser6
+sudo rm -R /home/testuser6
 
 #Creating a user account with uid 0
 echo "Creating a user account with uid 0"
