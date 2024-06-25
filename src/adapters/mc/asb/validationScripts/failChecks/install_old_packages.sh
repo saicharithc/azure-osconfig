@@ -246,6 +246,15 @@ installrpcgssd(){
     sudo touch /etc/krb5.keytab
     sudo systemctl restart rpc-gssd
 }
+removeauditd(){
+    # Remove auditd package
+    echo "removing auditd package"
+    sudo $package_manager remove -y audit
+    sudo $package_manager remove -y auditd
+    sudo $package_manager remove -y audit-libs
+    sudo $package_manager remove -y audit-libs-devel
+    sudo systemctl stop auditd
+}
 
 installinetd
 installxinetd
@@ -277,4 +286,4 @@ installrshclient
 installautofs
 
 installrpcgssd
-
+removeauditd
