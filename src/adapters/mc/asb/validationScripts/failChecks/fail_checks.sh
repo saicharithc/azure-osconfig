@@ -23,7 +23,7 @@ sudo ./fail_password_checks.sh
 sudo ./install_old_packages.sh
 sudo ./enable_old_packages.sh
 
-# sudo ./fail_user_group_checks.sh
+sudo ./fail_user_group_checks.sh
 
 sudo ./fail_misc.sh
 sudo ./fail_network_config_checks.sh
