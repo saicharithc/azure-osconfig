@@ -121,8 +121,8 @@ sudo sed -i '/ClientAliveCountMax/d' /etc/ssh/sshd_config.d/osconfig_remediation
 echo "ClientAliveCountMax 3" >> /etc/ssh/sshd_config
 
 #Enable more ssh ports
-# echo "Enable more ssh ports"
-# sudo echo "Port 33" >> /etc/ssh/sshd_config
+echo "Enable more ssh ports"
+sudo echo "Port 1122" >> /etc/ssh/sshd_config
 
 #Ensure that the allowed users for SSH access are not configured
 echo "Ensure that the allowed users for SSH access are not configured"
