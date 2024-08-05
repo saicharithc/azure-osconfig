@@ -24,8 +24,9 @@ sudo useradd -M testuser
 
 #Creating test user with a home directory without owing the home directory
 echo "Creating test user with a home directory without owing the home directory"
-sudo useradd -m testuser2
+sudo useradd testuser2 -p "testuser2"
 sudo chown root:root /home/testuser2
+sudo chmod 777 -R /home/testuser2
 
 
 #For one of dot files present in a user home diretory change permissions to 777 
