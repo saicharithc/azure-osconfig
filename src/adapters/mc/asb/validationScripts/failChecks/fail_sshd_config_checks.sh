@@ -18,9 +18,12 @@ if [ "$os_name" = "sles" ]; then
 fi
 
 #remove protocol 2 from '/etc/ssh/sshd_config Protocol = 2' (106.1)
-echo "remove protocol 2 from '/etc/ssh/sshd_config Protocol = 2'"
-sudo sed -i 's/Protocol 2/Protocol 1/g' /etc/ssh/sshd_config
-sudo sed -i 's/Protocol 2/Protocol 1/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+if [ ! $os_name$os_version == "ubuntu16.04" ]; then
+    echo "remove protocol 2 from '/etc/ssh/sshd_config Protocol = 2'"
+    sudo sed -i 's/Protocol 2/Protocol 1/g' /etc/ssh/sshd_config
+    sudo sed -i 's/Protocol 2/Protocol 1/g' /etc/ssh/sshd_config.d/osconfig_remediation.conf
+fi
+
 
 #set '/etc/ssh/sshd_config IgnoreRhosts = no' (106.3)
 echo "set '/etc/ssh/sshd_config IgnoreRhosts = no'"
